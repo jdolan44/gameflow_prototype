@@ -12,9 +12,12 @@
   },
   "license": "ISC",
   "author": "Joseph Dolan",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
   }
 }
