@@ -19,5 +19,8 @@
   },
   "dependencies": {
     "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^10.0.2"
   }
 }

@@ -1,11 +1,11 @@
-import promptSync from 'prompt-sync';
-const prompt = promptSync();
+import { InputHandler } from "./InputHandler.js";
 export class GameObject {
 
     gameState; //object representing the game state.
     whoseMove; //integer representing which player's turn it is.
+    inputHandler; //manages how game input is received.
 
-    constructor() {
+    constructor(inputHandler = new InputHandler()) {
         if (this.constructor == GameObject) {
             throw new Error("GameObject is abstract and cannot be instantiated directly!");
         }
@@ -21,17 +21,12 @@ export class GameObject {
         if (this.checkWinner == undefined) {
             throw new Error("checkWinner() must be defined!");
         }
+        this.inputHandler = inputHandler;
     }
 
     nextPlayer() {
         if (this.whoseMove == 1) this.whoseMove = 2;
         else this.whoseMove = 1;
-    }
-
-    requestMove() {
-        console.log(`it's player ${this.whoseMove}'s turn.`);
-        let move = prompt("what is your move? ");
-        return move;
     }
 
     runGame() {
@@ -40,7 +35,8 @@ export class GameObject {
             this.nextPlayer();
             let move = null;
             do {
-                move = this.requestMove();
+                //how does the user get feedback on invalid turn?
+                move = this.inputHandler.requestMove(this.whoseMove);
             } while (!this.isValidTurn(move));
             this.takeTurn(move);
             winner = this.checkWinner();
