@@ -1,4 +1,4 @@
-import { ConsoleInputHandler } from "./consoleInputHandler.js";
+import { ConsoleInputHandler } from "./ConsoleInputHandler.js";
 export class Session {
     game; //GameObject instance
     inputHandler;
