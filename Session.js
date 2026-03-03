@@ -1,11 +1,9 @@
 export class Session {
     game; //GameObject instance
-    inputHandler; //InputHandler instance
-    players;
+    playerInputHandlers;
 
-    constructor(player1, player2, game, inputHandler) {
-        this.players = [player1, player2];
-        this.inputHandler = inputHandler;
+    constructor(player1Handler, player2Handler, game) {
+        this.playerInputHandlers = [player1Handler, player2Handler];
         this.game = game;
     }
 
@@ -17,16 +15,19 @@ export class Session {
             this.game.takeTurn(move);
             winner = this.game.checkWinner(); //what if it's a draw?
         } while (!winner);
-        this.inputHandler.emitGameOver(this.game.whoseMove); //determine game end status in the game class
-        console.log(`game ended between ${this.players[0]} and ${this.players[1]}.`);
+        this.playerInputHandlers.forEach((handler) => {
+            handler.emitGameOver(this.game.whoseMove);
+        });
+        //console.log(`game ended between ${this.players[0]} and ${this.players[1]}.`);
+        console.log(`game ended.`);
     }
 
     async getMove() {
         let move = null;
-        let currentPlayerId = this.players[this.game.whoseMove - 1];
+        const handler = this.playerInputHandlers[this.game.whoseMove - 1];
         do {
             //how does the user get feedback on invalid turn?
-            move = await this.inputHandler.requestMove(currentPlayerId, this.game.whoseMove); //ugly!
+            move = await handler.requestMove(this.game.whoseMove); //ugly!
         } while (!this.game.isValidTurn(move));
         return move;
     }

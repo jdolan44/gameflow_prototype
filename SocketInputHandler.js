@@ -1,27 +1,23 @@
 import { InputHandler } from "./InputHandler.js";
 
 export class SocketInputHandler extends InputHandler {
-    io;
+    socket;
 
-    constructor(io) {
+    constructor(socket) {
         super();
-        this.io = io;
+        this.socket = socket;
     }
 
 
-    async requestMove(playerId, status) {
+    async requestMove(status) {
         return new Promise((resolve) => {
-            // Tell the client to request input
-            const socket = this.io.sockets.sockets.get(playerId);
-            if (!socket) return resolve(null);
-
-            socket.emit('request_move', status, (response) => {
+            this.socket.emit('request_move', status, (response) => {
                 resolve(response.move);
             });
         });
     }
 
     emitGameOver(status) {
-        this.io.emit("game_over", status);
+        this.socket.emit("game_over", status);
     }
 }

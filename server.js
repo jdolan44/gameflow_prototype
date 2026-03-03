@@ -9,12 +9,13 @@ io.on("connection", (socket) => {
 
     if (waitingPlayer) {
         let game = new SimpleGame();
-        let handler = new SocketInputHandler(io);
-        let session = new Session(waitingPlayer, socket.id, game, handler);
+        let handler1 = new SocketInputHandler(waitingPlayer);
+        let handler2 = new SocketInputHandler(socket);
+        let session = new Session(handler1, handler2, game);
         session.runGame();
         waitingPlayer = null;
     }
     else {
-        waitingPlayer = socket.id;
+        waitingPlayer = socket;
     }
 });
