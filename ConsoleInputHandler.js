@@ -1,3 +1,4 @@
+//DEPRECATED!!!!
 import { InputHandler } from "./InputHandler.js";
 import promptSync from 'prompt-sync';
 const prompt = promptSync();
