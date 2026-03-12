@@ -12,8 +12,8 @@ export class Session {
         do {
             this.game.nextPlayer();
             let move = await this.getMove();
-            this.game.takeTurn(move);
-            winner = this.game.checkWinner(); //what if it's a draw?
+            this.game.takeTurn(move, this.game.gameState);
+            winner = this.game.checkWinner(this.game.gameState); //what if it's a draw?
         } while (!winner);
         this.playerInputHandlers.forEach((handler) => {
             handler.emitGameOver(this.game.whoseMove, this.game.gameState);
@@ -29,7 +29,7 @@ export class Session {
             //how does the user get feedback on invalid turn?
             move = await handler.requestMove(this.game.whoseMove, this.game.gameState);
             console.log(move);
-        } while (!this.game.isValidTurn(move));
+        } while (!this.game.isValidTurn(move, this.game.gameState));
         return move;
     }
 }

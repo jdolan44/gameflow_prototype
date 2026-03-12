@@ -1,13 +1,12 @@
 import { GameObject } from "./GameObject.js";
 
 export class SimpleGame extends GameObject {
-    winner;
-    init() { this.winner = false; }
-    isValidTurn(move) {
+    initialState() { return { winner: false } }
+    isValidTurn(move, gameState) {
         return move == "i want to win" || move == "pass";
     }
-    takeTurn(move) {
-        if (move == "i want to win") { this.winner = true; }
+    takeTurn(move, gameState) {
+        if (move == "i want to win") { gameState.winner = true; }
     }
-    checkWinner() { return this.winner; }
+    checkWinner(gameState) { return gameState.winner; }
 }
