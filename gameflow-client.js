@@ -1,15 +1,15 @@
 import { io } from "socket.io-client";
 export class Client {
     constructor(host) { //takes location of host server
-        const socket = io(host);
+        this.socket = io(host);
     }
 
     joinGame(gameType) {
-        socket.emit("joinGame", { gameType });
+        this.socket.emit("joinGame", { gameType });
     }
 
     disconnect() {
-        socket.disconnect();
+        this.socket.disconnect();
     }
     //maybe add function for getting current game type connected?
 
@@ -19,7 +19,7 @@ export class Client {
 
     //the method handleMove should return the move being made.
     onTurn(handleMove) {
-        socket.on("request_move", (status, gameState, callback) => {
+        this.socket.on("request_move", (status, gameState, callback) => {
             let move = handleMove(status, gameState);
             callback({ move });
         });
@@ -33,7 +33,7 @@ export class Client {
     }
 
     onGameOver(handleGameOver) {
-        socket.on("game_over", handleGameOver);
+        this.socket.on("game_over", handleGameOver);
     }
 
     //for when a game disconnects/abruptly ends.

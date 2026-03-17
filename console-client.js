@@ -1,8 +1,8 @@
-import { io } from "socket.io-client";
 import promptSync from 'prompt-sync';
+import { Client } from './gameflow-client.js';
 const prompt = promptSync();
 
-const socket = io("http://localhost:3000");
+const client = new Client("http://localhost:3000");
 
 // choose which game to play
 let choice = process.argv[2];
@@ -16,25 +16,23 @@ if (choice === "ticTacToe") {
 }
 
 function playSimpleGame() {
-    socket.emit("joinGame", { gameType: "simple" });
+    client.joinGame("simple");
 
-    socket.on("request_move", (status, gameState, callback) => {
+    client.onTurn((status, gameState) => {
         console.log(`it's player ${status}'s turn.`);
         // ignoring gameState for simple game
         let move = prompt("what is your move? ");
-        callback({
-            move: move
-        });
+        return move;
     });
 
-    socket.on("game_over", (status) => {
+    client.onGameOver((status) => {
         console.log(`player ${status} wins!`);
-        socket.disconnect();
+        client.disconnect();
     });
 }
 
 function playTicTacToe() {
-    socket.emit("joinGame", { gameType: "ticTacToe" });
+    client.joinGame("ticTacToe");
 
     const renderBoard = (b) => {
         console.log("board:");
@@ -43,16 +41,16 @@ function playTicTacToe() {
         }
     };
 
-    socket.on("request_move", (status, gameState, callback) => {
+    client.onTurn((status, gameState) => {
         console.log(`it's player ${status}'s turn.`);
         if (gameState && gameState.board) renderBoard(gameState.board);
         const raw = prompt("enter coordinates as x,y (0-2): ");
         const [xStr, yStr] = raw.split(",");
         const move = { x: parseInt(xStr, 10), y: parseInt(yStr, 10) };
-        callback({ move });
+        return move;
     });
 
-    socket.on("game_over", (status, gameState) => {
+    client.onGameOver((status, gameState) => {
         console.log(`game over!`);
         if (gameState.winner == "draw") {
             console.log("it's a draw!");
@@ -61,6 +59,6 @@ function playTicTacToe() {
             console.log(`${gameState.winner} wins!`);
         }
         if (gameState && gameState.board) renderBoard(gameState.board);
-        socket.disconnect();
+        client.disconnect();
     });
 }
