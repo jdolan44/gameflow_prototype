@@ -9,7 +9,7 @@ const io = new Server(3000, {
         origin: "*"
     }
 });
-console.log("server started!");
+console.log("START");
 
 // store one waiting socket per game type, could be extended to queues
 const waitingPlayers = {};
@@ -29,11 +29,10 @@ function createGame(type) {
 }
 
 io.on("connection", (socket) => {
-    console.log("player connected! " + socket.id);
+    console.log("CONNECTED: " + socket.id);
 
     // client should emit a join request specifying the kind of game
     socket.on("joinGame", ({ gameType = "simple" } = {}) => {
-        console.log(`socket ${socket.id} is looking for a ${gameType} game`);
 
         if (waitingPlayers[gameType]) {
             const opponent = waitingPlayers[gameType];
@@ -44,8 +43,10 @@ io.on("connection", (socket) => {
             const handler2 = new SocketInputHandler(socket);
             const session = new Session(handler1, handler2, game);
             session.runGame();
+            console.log(`GAME START: ${socket.id}, ${opponent.id}!`);
         } else {
             waitingPlayers[gameType] = socket;
+            console.log(`QUEUED: ${socket.id}, ${gameType}`);
         }
     });
 
@@ -54,8 +55,10 @@ io.on("connection", (socket) => {
         for (const [type, ws] of Object.entries(waitingPlayers)) {
             if (ws === socket) {
                 delete waitingPlayers[type];
+                console.log(`LEFT QUEUE: ${socket.id}`);
                 break;
             }
         }
+        //middle of a game!
     });
 });
