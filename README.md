@@ -5,4 +5,8 @@ The goal of this prototype is to define a simple contract that multiple two-play
 
 ### Known Issues
 - No notification system for a player's invalid moves.
-- what information clients recieve when the game is over is not clear enough (currently just the final game state and the player whose turn it was when the game ended.)
+- The Socket.IO protocol needs some refining.
+    - Initially, I had a "request move" event which uses Socket.IO's callback feature. However I've decided to modify it so the system is solely send/recieve. 
+- the `GameObject` class also manages running the state of the game. I plan to move this back into the `Session` object.
+- the core server is coupled directly to Socket.IO. I may change this to a "transport layer" object that deals with everything Socket.IO.
+- some issues with connecting GameFlow to a web client.
