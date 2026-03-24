@@ -17,7 +17,6 @@ export class Client {
 
     }
 
-    //in process of implementing
     onMyTurn(handleMyTurn) {
         this.socket.on("request_move", handleMyTurn);
     }
