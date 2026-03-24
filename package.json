@@ -19,6 +19,9 @@
     "client": "node console-client.js"
   },
   "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "http": "^0.0.1-security",
     "prompt-sync": "^4.2.0",
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3"

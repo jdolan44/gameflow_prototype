@@ -1,4 +1,5 @@
-import { io } from "socket.io-client";
+//import { io } from "socket.io-client";
+//issue: the console client needs the above line. The web client can't have it!
 export class Client {
     constructor(host) { //takes location of host server
         this.socket = io(host);
@@ -12,7 +13,6 @@ export class Client {
         this.socket.disconnect();
     }
     //maybe add function for getting current game type connected?
-
     onJoin() {
 
     }

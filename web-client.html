@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Game prototype!</title>
+</head>
+
+<body>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script type="module">
+        import { Client } from "http://localhost:3000/gameflow_client.js";
+
+        let client = new Client("http://localhost:3000");
+        client.joinGame("simple");
+        client.onMyTurn((status, gameState) => {
+            let move = window.prompt("what is your move?");
+            client.takeTurn(move);
+        });
+        client.onGameOver((status) => {
+            window.alert("game over! player " + status + " wins!");
+        });
+    </script>
+</body>
+
+</html>

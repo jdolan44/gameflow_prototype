@@ -3,10 +3,20 @@ import { TicTacToe } from "./TicTacToe.js";
 import { Session } from "./Session.js";
 import { SocketInputHandler } from "./SocketInputHandler.js";
 import { Server } from "socket.io";
+import express from "express";
+import cors from "cors";
+import path from "path";
+import process from "process";
+import { createServer } from "http";
 
-const io = new Server(3000, {
+const app = express();
+app.use(cors());
+const server = createServer(app);
+
+const io = new Server(server, {
     cors: {
-        origin: "*"
+        origin: "*", // or "http://localhost:8000"
+        methods: ["GET", "POST"]
     }
 });
 console.log("START");
@@ -61,4 +71,16 @@ io.on("connection", (socket) => {
         }
         //middle of a game!
     });
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(process.cwd(), 'web-client.html'));
+});
+
+app.get('/gameflow_client.js', (req, res) => {
+    res.sendFile(path.join(process.cwd(), 'gameflow-client.js'));
+});
+
+server.listen(3000, () => {
+    console.log('server running at http://localhost:3000');
 });
