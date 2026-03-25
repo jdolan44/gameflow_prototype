@@ -15,10 +15,13 @@ export class Session {
             this.game.takeTurn(move, this.game.gameState);
             winner = this.game.checkWinner(this.game.gameState); //what if it's a draw?
         } while (!winner);
+        handleGameOver();
+    }
+
+    handleGameOver() {
         this.playerInputHandlers.forEach((handler) => {
             handler.emitGameOver(this.game.whoseMove, this.game.gameState);
         });
-        //console.log(`game ended between ${this.players[0]} and ${this.players[1]}.`);
         console.log(`game ended.`);
     }
 
