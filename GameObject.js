@@ -23,26 +23,6 @@ export class GameObject {
         this.gameState = this.initialState();
     }
 
-    async run(requestMove, onGameOver) {
-        let winner = null;
-        do {
-            this.nextPlayer();
-            let move = await this.getMove(requestMove);
-            this.takeTurn(move, this.gameState);
-            winner = this.checkWinner(this.gameState); //what if it's a draw?
-        } while (!winner);
-        onGameOver(this.whoseMove, this.gameState);
-    }
-
-    async getMove(requestMove) {
-        let move = null;
-        do {
-            move = await requestMove(this.whoseMove, this.gameState);
-            console.log("TURN: " + move); //for debugging
-        } while (!this.isValidTurn(move, this.gameState));
-        return move;
-    }
-
     nextPlayer() {
         if (this.whoseMove == 1) this.whoseMove = 2;
         else this.whoseMove = 1;

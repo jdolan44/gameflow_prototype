@@ -1,8 +1,9 @@
 import promptSync from 'prompt-sync';
 import { Client } from './gameflow-client.js';
+import { io } from "socket.io-client";
 const prompt = promptSync();
 
-const client = new Client("http://localhost:3000");
+const client = new Client("http://localhost:3000", io);
 
 // choose which game to play
 let choice = process.argv[2];

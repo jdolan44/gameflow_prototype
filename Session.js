@@ -8,14 +8,28 @@ export class Session {
     }
 
     async runGame() {
-        this.game.run(
-            // callback that asks the correct handler for a move
-            (player, state) =>
-                this.playerInputHandlers[player - 1].requestMove(player, state),
+        let winner = null;
+        do {
+            this.game.nextPlayer();
+            let move = await this.getMove();
+            this.game.takeTurn(move, this.game.gameState);
+            winner = this.game.checkWinner(this.game.gameState); //what if it's a draw?
+        } while (!winner);
+        this.playerInputHandlers.forEach((handler) => {
+            handler.emitGameOver(this.game.whoseMove, this.game.gameState);
+        });
+        //console.log(`game ended between ${this.players[0]} and ${this.players[1]}.`);
+        console.log(`game ended.`);
+    }
 
-            // optional notification for all handlers
-            (winner, state) =>
-                this.playerInputHandlers.forEach(h => h.emitGameOver(winner, state))
-        );
+    async getMove() {
+        let move = null;
+        const handler = this.playerInputHandlers[this.game.whoseMove - 1];
+        do {
+            //how does the user get feedback on invalid turn?
+            move = await handler.requestMove(this.game.whoseMove, this.game.gameState);
+            console.log(move);
+        } while (!this.game.isValidTurn(move, this.game.gameState));
+        return move;
     }
 }
