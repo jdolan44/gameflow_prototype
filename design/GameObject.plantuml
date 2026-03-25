@@ -1,0 +1,26 @@
+@startuml gameobject
+class GameObject{
+    -gameState: object
+    -whoseMove: number
+   .. Template methods ..
+    +initialState()
+    +takeTurn(move, gameState)
+    +isValidTurn(move, gameState): boolean
+    +checkWinner(): boolean
+    .. Built-in ..
+    +nextPlayer()
+
+}
+
+note right of GameObject : Template methods must be \nimplemented by subclasses.
+
+class TicTacToe extends GameObject{
+    +initialState()
+    +takeTurn(move, gameState)
+    +isValidTurn(move, gameState): boolean
+    +checkWinner(): boolean
+}
+
+note right of TicTacToe : implements methods according \nto the rules of TicTacToe.
+
+@enduml
