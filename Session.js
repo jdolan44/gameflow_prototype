@@ -15,7 +15,7 @@ export class Session {
             this.game.takeTurn(move, this.game.gameState);
             winner = this.game.checkWinner(this.game.gameState); //what if it's a draw?
         } while (!winner);
-        handleGameOver();
+        this.handleGameOver();
     }
 
     handleGameOver() {
