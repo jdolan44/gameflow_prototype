@@ -10,16 +10,15 @@ export class Client {
      * @param {string} gameType the string identifier of the game to join.
      */
     joinGame(gameType) {
-        this.socket.emit("joinGame", { gameType });
-        //future update: let the client know it joined successfully?
+        this.socket.emit("join_game", { gameType });
     }
 
     disconnect() {
         this.socket.disconnect();
     }
-    //maybe add function for getting current game type connected?
-    onJoin() {
 
+    onJoin(handleJoin) {
+        this.socket.on("join_status", handleJoin);
     }
 
     onMyTurn(handleMyTurn) {

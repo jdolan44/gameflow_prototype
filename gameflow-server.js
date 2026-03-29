@@ -1,7 +1,6 @@
 import { SimpleGame } from "./SimpleGame.js";
 import { TicTacToe } from "./TicTacToe.js";
 import { Session } from "./Session.js";
-import { SocketInputHandler } from "./SocketInputHandler.js";
 import { Server } from "socket.io";
 import express from "express";
 import cors from "cors";
@@ -15,7 +14,7 @@ const server = createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "*", // or "http://localhost:8000"
+        origin: "*",
         methods: ["GET", "POST"]
     }
 });
@@ -42,20 +41,20 @@ io.on("connection", (socket) => {
     console.log("CONNECTED: " + socket.id);
 
     // client should emit a join request specifying the kind of game
-    socket.on("joinGame", ({ gameType = "simple" } = {}) => {
+    socket.on("join_game", ({ gameType = "simple" } = {}) => {
 
         if (waitingPlayers[gameType]) {
             const opponent = waitingPlayers[gameType];
             delete waitingPlayers[gameType];
 
             const game = createGame(gameType);
-            const handler1 = new SocketInputHandler(opponent);
-            const handler2 = new SocketInputHandler(socket);
-            const session = new Session(handler1, handler2, game);
+            const players = [opponent, socket];
+            const session = new Session(players, game);
             session.runGame();
             console.log(`GAME START: ${socket.id}, ${opponent.id}!`);
         } else {
             waitingPlayers[gameType] = socket;
+            socket.emit("join_status", "queued"); //notify client they have been queued
             console.log(`QUEUED: ${socket.id}, ${gameType}`);
         }
     });

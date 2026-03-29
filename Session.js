@@ -1,10 +1,14 @@
 export class Session {
     game; //GameObject instance
-    playerInputHandlers; //array of each player's input handlers.
+    players; //array of each player's socket.
 
-    constructor(player1Handler, player2Handler, game) {
-        this.playerInputHandlers = [player1Handler, player2Handler];
+    constructor(players, game) {
+        this.players = players;
         this.game = game;
+
+        this.players.forEach((player) => {
+            player.emit("join_status", "begin");
+        });
     }
 
     async runGame() {
@@ -19,20 +23,27 @@ export class Session {
     }
 
     handleGameOver() {
-        this.playerInputHandlers.forEach((handler) => {
-            handler.emitGameOver(this.game.whoseMove, this.game.gameState);
+        this.players.forEach((player) => {
+            player.emit("game_over", this.game.whoseMove, this.game.gameState);
         });
         console.log(`game ended.`);
     }
 
+    //ew
     async getMove() {
         let move = null;
-        const handler = this.playerInputHandlers[this.game.whoseMove - 1];
+        const currentPlayer = this.players[this.game.whoseMove - 1];
         do {
-            //how does the user get feedback on invalid turn?
-            move = await handler.requestMove(this.game.whoseMove, this.game.gameState);
+            currentPlayer.emit('request_move', this.game.whoseMove, this.game.gameState);
+            move = await new Promise((resolve) => {
+                currentPlayer.on("take_turn", (move) => {
+                    resolve(move);
+                });
+            });
             console.log(move);
         } while (!this.game.isValidTurn(move, this.game.gameState));
         return move;
     }
+
+
 }
