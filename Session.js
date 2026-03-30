@@ -1,14 +1,25 @@
 export class Session {
     game; //GameObject instance
     players; //array of each player's socket.
+    roomID; //ID of the socket.io room created for this game.
+    io; //Socket.IO server instance
 
-    constructor(players, game) {
+    constructor(players, game, io) {
         this.players = players;
         this.game = game;
+        this.io = io;
+        this.roomID = players.map(p => p.id).join("-");
 
+        // Join players to the room
         this.players.forEach((player) => {
-            player.emit("join_status", "begin");
+            player.join(this.roomID);
         });
+
+        //log game start
+        console.log(`GAME START: ${this.roomID}`);
+
+        // Emit to everyone in the room
+        this.io.to(this.roomID).emit("join_status", "begin");
     }
 
     async runGame() {
@@ -23,10 +34,8 @@ export class Session {
     }
 
     handleGameOver() {
-        this.players.forEach((player) => {
-            player.emit("game_over", this.game.whoseMove, this.game.gameState);
-        });
-        console.log(`game ended.`);
+        this.io.to(this.roomID).emit("game_over", this.game.whoseMove, this.game.gameState);
+        console.log(`GAME END: ${this.roomID}`);
     }
 
     //ew

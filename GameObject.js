@@ -21,6 +21,7 @@ export class GameObject {
             throw new Error("checkWinner(gameState) must be defined!");
         }
         this.gameState = this.initialState();
+        //this.whoseMove = 1;
     }
 
     nextPlayer() {

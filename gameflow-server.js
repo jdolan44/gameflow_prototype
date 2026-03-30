@@ -49,9 +49,8 @@ io.on("connection", (socket) => {
 
             const game = createGame(gameType);
             const players = [opponent, socket];
-            const session = new Session(players, game);
+            const session = new Session(players, game, io);
             session.runGame();
-            console.log(`GAME START: ${socket.id}, ${opponent.id}!`);
         } else {
             waitingPlayers[gameType] = socket;
             socket.emit("join_status", "queued"); //notify client they have been queued
