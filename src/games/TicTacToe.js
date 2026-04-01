@@ -1,4 +1,4 @@
-import { GameObject } from "./GameObject.js";
+import { GameObject } from "../core/GameObject.js";
 
 export class TicTacToe extends GameObject {
     // move all state into gameState so it can be inspected/serialized

@@ -1,4 +1,4 @@
-import { GameObject } from "./GameObject.js";
+import { GameObject } from "../core/GameObject.js";
 
 export class SimpleGame extends GameObject {
     initialState() { return { winner: false } }

@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import promptSync from 'prompt-sync';
-import { Client } from './gameflow-client.js';
+import { Client } from '../core/gameflow-client.js';
 const prompt = promptSync();
 
 const client = new Client("http://localhost:3000");

@@ -1,5 +1,5 @@
-import { SimpleGame } from "./SimpleGame.js";
-import { TicTacToe } from "./TicTacToe.js";
+import { SimpleGame } from "../games/SimpleGame.js";
+import { TicTacToe } from "../games/TicTacToe.js";
 import { Session } from "./Session.js";
 import { Server } from "socket.io";
 import express from "express";
@@ -85,11 +85,11 @@ io.on("connection", (socket) => {
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'web-client.html'));
+    res.sendFile(path.join(process.cwd(), 'src/clients/web-client.html'));
 });
 
 app.get('/gameflow_client.js', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'gameflow-client.js'));
+    res.sendFile(path.join(process.cwd(), 'src/core/gameflow-client.js'));
 });
 
 server.listen(3000, () => {

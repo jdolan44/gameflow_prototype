@@ -15,8 +15,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "server": "node gameflow-server.js",
-    "client": "node console-client.js"
+    "server": "node src/server/gameflow-server.js",
+    "client": "node src/clients/console-client.js"
   },
   "dependencies": {
     "cors": "^2.8.6",

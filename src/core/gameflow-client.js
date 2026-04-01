@@ -1,4 +1,5 @@
-import { io } from "socket.io-client";
+/* eslint-disable no-undef */
+//import { io } from "socket.io-client";
 //issue: the console client needs the above line. The web client can't have it!
 export class Client {
     handleTurn;
