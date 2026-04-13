@@ -1,6 +1,5 @@
-/* eslint-disable no-undef */
-//import { io } from "socket.io-client";
-//issue: the console client needs the above line. The web client can't have it!
+import { io } from "http://localhost:3000/socket.io/socket.io.esm.min.js";
+
 export class Client {
     handleTurn;
     constructor(host/*, io*/) { //takes location of host server
