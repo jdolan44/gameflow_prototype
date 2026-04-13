@@ -1,12 +1,13 @@
 import { io } from "http://localhost:3000/socket.io/socket.io.esm.min.js";
 
 export class Client {
-    handleTurn;
     constructor(host/*, io*/) { //takes location of host server
         this.socket = io(host);
         this.sessionID = null;
         this.handleMyTurn = () => { };
         this.handleInvalidTurn = () => { };
+        this.handleWinner = () => { };
+        this.handleQuit = () => { };
         this.currentTurnData = null;
 
         //handles trigger for my turn
@@ -23,6 +24,16 @@ export class Client {
                 this.handleMyTurn(this.currentTurnData);
             }
         })
+
+        this.socket.on("game_end", (data) => {
+            switch (data.reason) {
+                case "quit":
+                    this.handleQuit(data);
+                    break;
+                case "win":
+                    this.handleWinner(data);
+            }
+        });
     }
     /**
      * Requests to join a game. 
@@ -64,8 +75,9 @@ export class Client {
         this.socket.emit("game_message", { type: "take_turn", payload: { move }, sessionID: this.sessionID });
     }
 
-    onGameOver(handleGameOver) {
-        this.socket.on("game_over", handleGameOver);
+    onWinner(handleWinner) {
+        //this.socket.on("game_end", handleGameOver);
+        this.handleWinner = handleWinner;
     }
 
     //TODO: modify this so client doesn't have to know if it's the winner
@@ -75,6 +87,6 @@ export class Client {
 
     //for when a game disconnects/abruptly ends.
     onQuit(handleQuit) {
-        this.socket.on("game_end_quit", handleQuit);
+        this.handleQuit = handleQuit;
     }
 }

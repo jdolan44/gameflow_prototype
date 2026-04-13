@@ -34,12 +34,6 @@ export class Session {
         return this.players[this.game.whoseMove - 1].id
     }
 
-    handleGameOver() {
-        this.sendToRoom("game_over", { winner: this.getCurrentPlayer(), state: this.game.gameState });
-        console.log(`GAME END: ${this.sessionID}`);
-        this.onGameEnd(this.sessionID);
-    }
-
     //handles a game message from a given socket.
     //message will be in format: {type, payload}.
     handleMessage(socket, msg) {
@@ -90,8 +84,14 @@ export class Session {
 
     }
 
+    handleGameOver() {
+        this.sendToRoom("game_end", { reason: "win", winner: this.getCurrentPlayer(), state: this.game.gameState });
+        console.log(`GAME END: ${this.sessionID}`);
+        this.onGameEnd(this.sessionID);
+    }
+
     handleQuit(socket) {
-        this.sendToRoom("game_end_quit", { quitter: socket.id, state: this.game.gameState });
+        this.sendToRoom("game_end", { reason: "quit", quitter: socket.id, state: this.game.gameState });
         console.log(`GAME END: ${this.sessionID}`);
         this.sendActionResult(socket, true);
         this.onGameEnd(this.sessionID);

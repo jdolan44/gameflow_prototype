@@ -56,7 +56,7 @@ client.onInvalidTurn((message) => {
 });
 
 // when game is over, announce winner and allow the user to join a new game
-client.onGameOver((data) => {
+client.onWinner((data) => {
     if (client.isWinner(data)) {
         changeGameStatus("You win!");
     }
