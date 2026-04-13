@@ -32,6 +32,13 @@ export class Client {
         this.socket.emit("join_game", { gameType });
     }
 
+    /**
+     * Quits the currently joined game.
+     */
+    quitGame() {
+        this.socket.emit("game_message", { type: "quit_game", payload: {}, sessionID: this.sessionID });
+    }
+
     disconnect() {
         this.socket.disconnect();
     }
@@ -67,7 +74,7 @@ export class Client {
     }
 
     //for when a game disconnects/abruptly ends.
-    onDisconnect() {
-
+    onQuit(handleQuit) {
+        this.socket.on("game_end_quit", handleQuit);
     }
 }

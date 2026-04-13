@@ -1,16 +1,23 @@
 import { Client } from "http://localhost:3000/gameflow_client.js";
+
+/** @type {Client} */
 const client = new Client("http://localhost:3000");
 
 const joinButton = document.getElementById("join");
 const joinStatus = document.getElementById("join_status");
 const submitButton = document.getElementById("submit");
 const gameStatus = document.getElementById("game_status");
+const quitButton = document.getElementById("quit");
 
 //request to join game when the join button is clicked
 joinButton.addEventListener("click", () => {
     client.joinGame("simple");
     joinButton.setAttribute("disabled", "true");
     changeGameStatus("");
+});
+
+quitButton.addEventListener("click", () => {
+    client.quitGame();
 });
 
 //sends move when submit button is clicked.
@@ -57,4 +64,10 @@ client.onGameOver((data) => {
         changeGameStatus("You lose!")
     }
     joinButton.removeAttribute("disabled");
+});
+
+client.onQuit((data) => {
+    changeGameStatus("game quit by: " + data.quitter);
+    joinButton.removeAttribute("disabled");
+    submitButton.setAttribute("disabled", "true");
 });

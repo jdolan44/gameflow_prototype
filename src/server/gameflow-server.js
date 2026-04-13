@@ -70,7 +70,12 @@ io.on("connection", (socket) => {
     });
 
     socket.on("game_message", (msg) => {
-        sessions[msg.sessionID].handleMessage(socket, msg);
+        if (sessions[msg.sessionID]) {
+            sessions[msg.sessionID].handleMessage(socket, msg);
+        }
+        else {
+            socket.emit("action_result", { success: false, error: "session no longer exists!" });
+        }
     });
 
     socket.on("disconnect", () => {

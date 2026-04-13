@@ -43,6 +43,9 @@ export class Session {
             case "take_turn":
                 this.handleTurn(socket, msg.payload.move);
                 break;
+            case "quit_game":
+                this.handleQuit(socket);
+                break;
             default:
                 this.sendActionResult(socket, false, "message type not recognized!");
         }
@@ -82,7 +85,13 @@ export class Session {
         //TODO: make a state update function
         this.io.to(this.sessionID).emit("state_update", { state: this.game.gameState, whoseMove: this.players[this.game.whoseMove - 1].id });
 
+    }
 
+    handleQuit(socket) {
+        this.io.to(this.sessionID).emit("game_end_quit", { quitter: socket.id, state: this.game.gameState });
+        console.log(`GAME END: ${this.sessionID}`);
+        this.sendActionResult(socket, true);
+        this.onGameEnd(this.sessionID);
     }
 
     sendActionResult(socket, success = true, error = "") {
