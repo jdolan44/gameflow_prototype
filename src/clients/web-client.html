@@ -45,9 +45,10 @@
     <script type="module">
         import { Client } from "http://localhost:3000/gameflow_client.js";
         const client = new Client("http://localhost:3000");
-        const submitButton = document.getElementById("submit");
+
         const joinButton = document.getElementById("join");
         const joinStatus = document.getElementById("join_status");
+        const submitButton = document.getElementById("submit");
         const gameStatus = document.getElementById("game_status");
 
         //request to join game when the join button is clicked
@@ -55,6 +56,31 @@
             client.joinGame("simple");
             joinButton.setAttribute("disabled", "true");
             changeGameStatus("");
+        });
+
+        //sends move when submit button is clicked.
+        submitButton.addEventListener("click", () => {
+            let move = document.getElementById("turn_input").value;
+            client.takeTurn(move);
+            changeGameStatus("waiting for other player...");
+            submitButton.setAttribute("disabled", "true");
+            document.getElementById("turn_input").value = "";
+        });
+
+        function changeGameStatus(message) {
+            gameStatus.innerHTML = message;
+        }
+
+        //Client handlers:
+
+        //notify client of join status
+        client.onJoin(({ status }) => {
+            if (status == "queued") {
+                joinStatus.innerHTML = "in queue...";
+            }
+            if (status == "begin") {
+                joinStatus.innerHTML = "joined!";
+            }
         });
 
         //enables submit button when it is the user's turn.
@@ -67,25 +93,6 @@
             window.alert(message);
         });
 
-        //notify client of join status
-        client.onJoin(({ status }) => {
-            if (status == "queued") {
-                joinStatus.innerHTML = "in queue...";
-            }
-            if (status == "begin") {
-                joinStatus.innerHTML = "joined!";
-            }
-        });
-
-        //sends move when submit button is clicked.
-        submitButton.addEventListener("click", () => {
-            let move = document.getElementById("turn_input").value;
-            client.takeTurn(move);
-            changeGameStatus("waiting for other player...");
-            submitButton.setAttribute("disabled", "true");
-            document.getElementById("turn_input").value = "";
-        });
-
         // when game is over, announce winner and allow the user to join a new game
         client.onGameOver((data) => {
             if (client.isWinner(data)) {
@@ -96,10 +103,6 @@
             }
             joinButton.removeAttribute("disabled");
         });
-
-        function changeGameStatus(message) {
-            gameStatus.innerHTML = message;
-        }
 
     </script>
 </body>
