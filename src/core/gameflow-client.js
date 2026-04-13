@@ -7,6 +7,7 @@ export class Client {
         this.socket = io(host);
         this.sessionID = null;
         this.handleMyTurn = () => { };
+        this.handleInvalidTurn = () => { };
         this.currentTurnData = null;
 
         //handles trigger for my turn
@@ -16,9 +17,10 @@ export class Client {
                 this.handleMyTurn(data);
             }
         });
-
-        this.socket.on("action_result", ({ success }) => {
+        // re-trigger turn handling on invalid move
+        this.socket.on("action_result", ({ success, error }) => {
             if (success === false) {
+                this.handleInvalidTurn(error);
                 this.handleMyTurn(this.currentTurnData);
             }
         })
@@ -46,6 +48,10 @@ export class Client {
 
     onMyTurn(handleMyTurn) {
         this.handleMyTurn = handleMyTurn;
+    }
+
+    onInvalidTurn(handleInvalidTurn) {
+        this.handleInvalidTurn = handleInvalidTurn;
     }
 
     takeTurn(move) {

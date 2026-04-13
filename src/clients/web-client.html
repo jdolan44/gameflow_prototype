@@ -63,6 +63,10 @@
             submitButton.removeAttribute("disabled");
         });
 
+        client.onInvalidTurn((message) => {
+            window.alert(message);
+        });
+
         //notify client of join status
         client.onJoin(({ status }) => {
             if (status == "queued") {
