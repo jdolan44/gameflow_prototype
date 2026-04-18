@@ -85,7 +85,7 @@ export class Session {
     }
 
     handleGameOver() {
-        this.sendToRoom("game_end", { reason: "win", winner: this.getCurrentPlayer(), state: this.game.gameState });
+        this.sendToRoom("game_end", { reason: "winner", winner: this.getCurrentPlayer(), state: this.game.gameState });
         console.log(`GAME END: ${this.sessionID}`);
         this.onGameEnd(this.sessionID);
     }
