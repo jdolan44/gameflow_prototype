@@ -7,7 +7,7 @@ export function createGameServer(options = {}) {
         httpServer,
         port = 3000,
         gameRegistry = {},
-        cors = { origin: "*" }
+        cors,
     } = options;
 
     const server = httpServer || createServer();
