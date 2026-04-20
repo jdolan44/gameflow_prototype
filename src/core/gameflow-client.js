@@ -40,6 +40,11 @@ export class Client {
                     }
                     this.callHandler('join', data);
                     break;
+                case "game_end":
+                    //fire one last state update
+                    this.callHandler('state_update', data.state);
+                    this.callHandler(event, data);
+                    break;
                 default:
                     this.callHandler(event, data);
             }

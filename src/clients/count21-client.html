@@ -10,9 +10,9 @@
     <hr />
     <section id="game">
         <div>Current count: <span id="count">0</span></div>
-        <button class="submit" value="1">+1</button>
-        <button class="submit" value="2">+2</button>
-        <button class="submit" value="3">+3</button>
+        <button class="submit" value="1" disabled="true">+1</button>
+        <button class="submit" value="2" disabled="true">+2</button>
+        <button class="submit" value="3" disabled="true">+3</button>
     </section>
     <script type="module">
         import { Client } from "http://localhost:3000/gameflow_client.js";
@@ -23,18 +23,47 @@
 
         client.onJoin(({ status }) => {
             document.getElementById("status").innerHTML = status;
+            if (status == "begin") {
+                document.getElementById("game").removeAttribute("hidden");
+            }
         });
 
         client.onStateUpdate((gameState) => {
-            console.log(gameState);
             document.getElementById("count").innerHTML = gameState.count;
+        });
+
+        client.onMyTurn((gameState) => {
+            //disable all buttons that are valid moves
+            document.querySelectorAll(".submit").forEach((button) => {
+                let buttonVal = parseInt(button.getAttribute("value"));
+                if (gameState.count + buttonVal <= 21) {
+                    button.removeAttribute("disabled");
+                }
+            });
         });
 
         //add the take turn listener to each button
         document.querySelectorAll(".submit").forEach((button) => {
             button.addEventListener("click", (event) => {
-                client.takeTurn({ count: parseInt(button.getAttribute("value")) });
+                takeTurn(parseInt(button.getAttribute("value")));
             });
+        });
+
+        function takeTurn(count) {
+            client.takeTurn({ count });
+            document.querySelectorAll(".submit").forEach((button) => {
+                button.setAttribute("disabled", "true");
+            });
+        }
+
+        //deal with game end
+        client.onGameOver((outcome) => {
+            if (client.isWinner(outcome)) {
+                document.getElementById("status").innerHTML = "you win!";
+            }
+            else {
+                document.getElementById("status").innerHTML = "you lose!";
+            }
         });
     </script>
 </body>
