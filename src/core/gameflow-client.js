@@ -114,9 +114,4 @@ export class Client {
     onGameOver(handleGameOver) {
         this.handlers.game_end = handleGameOver;
     }
-
-    //TODO: modify this so client doesn't have to know if it's the winner
-    isWinner(gameOverData) {
-        return gameOverData.winner === this.socket.id;
-    }
 }

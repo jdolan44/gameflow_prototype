@@ -96,7 +96,12 @@ export class Session {
             gameEndData.winner = this.players[outcome.winner - 1].id;
         }
 
-        this.sendToRoom("game_end", gameEndData);
+        this.players.forEach((player, index) => {
+            gameEndData.isWinner = (index == outcome.winner - 1);
+            player.emit("game_end", gameEndData);
+        });
+
+        //this.sendToRoom("game_end", gameEndData);
         console.log(`GAME END: ${this.sessionID}`);
         this.onGameEnd(this.sessionID);
     }

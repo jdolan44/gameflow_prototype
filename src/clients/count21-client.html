@@ -58,7 +58,7 @@
 
         //deal with game end
         client.onGameOver((outcome) => {
-            if (client.isWinner(outcome)) {
+            if (outcome.isWinner) {
                 document.getElementById("status").innerHTML = "you win!";
             }
             else {

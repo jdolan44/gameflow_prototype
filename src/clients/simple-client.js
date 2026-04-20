@@ -58,7 +58,7 @@ client.onInvalidTurn((message) => {
 //deal with each game over scenario.
 client.onGameOver((outcome) => {
     switch (outcome.reason) {
-        case "winner": handleWinner(outcome); break;
+        case "winner": handleWinner(outcome.isWinner); break;
         case "quit": handleQuit(outcome.quitter); break;
         case "draw": handleDraw(); break;
     }
@@ -68,8 +68,8 @@ client.onGameOver((outcome) => {
 
 //handlers for each game end type
 
-function handleWinner(data) {
-    if (client.isWinner(data)) {
+function handleWinner(isWinner) {
+    if (isWinner) {
         changeGameStatus("You win!");
     }
     else {
@@ -77,8 +77,8 @@ function handleWinner(data) {
     }
 };
 
-function handleQuit(data) {
-    changeGameStatus("game quit by: " + data.quitter);
+function handleQuit(quitter) {
+    changeGameStatus("game quit by: " + quitter);
 };
 
 function handleDraw() {
