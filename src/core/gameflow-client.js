@@ -13,13 +13,15 @@ export class Client {
         this.handlers = {
             myTurn: this.defaultHandler,
             invalidTurn: this.defaultHandler,
-            join: this.defaultHandler
+            join: this.defaultHandler,
+            state_update: this.defaultHandler
         };
         this.currentTurnData = null;
 
         this.socket.onAny((event, data) => {
             switch (event) {
                 case "state_update":
+                    this.callHandler('state_update', data);
                     if (data.whoseMove === this.socket.id) {
                         this.currentTurnData = data;
                         this.callHandler('myTurn', data);
@@ -90,6 +92,10 @@ export class Client {
 
     onJoin(handleJoin) {
         this.handlers.join = handleJoin;
+    }
+
+    onStateUpdate(handleStateUpdate) {
+        this.handlers.state_update = handleStateUpdate;
     }
 
     onMyTurn(handleMyTurn) {
