@@ -38,11 +38,7 @@ export class Client {
                     this.callHandler('join', data);
                     break;
                 default:
-                    if (this.handlers[event] && this.handlers[event] !== this.defaultHandler) {
-                        this.handlers[event](data);
-                    } else {
-                        console.warn(`Event ${event} was recieved but not handled.`);
-                    }
+                    this.callHandler(event, data);
             }
         });
     }
