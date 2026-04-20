@@ -1,4 +1,5 @@
-import { io } from "http://localhost:3000/socket.io/socket.io.esm.min.js";
+//TODO: only works if client and server are on the same port
+import { io } from "./socket.io/socket.io.esm.min.js";
 
 export class Client {
     /**

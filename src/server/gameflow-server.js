@@ -19,13 +19,15 @@ const gameRegistry = {
 
 createGameServer({ httpServer: server, gameRegistry });
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'src/clients/web-client.html'));
-});
+app.use(express.static(path.join(process.cwd(), "src/clients")));
 
-app.get('/web-client.js', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'src/clients/web-client.js'));
-});
+// app.get('/', (req, res) => {
+//     res.sendFile(path.join(process.cwd(), 'src/clients/web-client.html'));
+// });
+
+// app.get('/web-client.js', (req, res) => {
+//     res.sendFile(path.join(process.cwd(), 'src/clients/web-client.js'));
+// });
 
 //TODO: must be hosted somewhere. turn into a package?
 app.get('/gameflow_client.js', (req, res) => {
