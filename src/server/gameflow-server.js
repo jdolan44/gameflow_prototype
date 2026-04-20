@@ -6,6 +6,7 @@ import path from "path";
 import process from "process";
 import { createServer } from "http";
 import { createGameServer } from "./createGameServer.js";
+import { Count21 } from "../games/Count21.js";
 
 const app = express();
 app.use(cors());
@@ -14,7 +15,8 @@ const server = createServer(app);
 // registry so we can create new game instances by name
 const gameRegistry = {
     simple: SimpleGame,
-    ticTacToe: TicTacToe
+    ticTacToe: TicTacToe,
+    count21: Count21
 };
 
 createGameServer({ httpServer: server, gameRegistry });

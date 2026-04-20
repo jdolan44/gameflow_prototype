@@ -17,7 +17,8 @@ export class Session {
         });
 
         //log game start
-        console.log(`GAME START: ${this.sessionID}`);
+        console.log(`GAME START: ${this.sessionID},`);
+        console.log(this.game.gameState);
 
         // Emit to everyone in the room
         this.sendToRoom("join_status", { status: "begin", sessionID: this.sessionID });

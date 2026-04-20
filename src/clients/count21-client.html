@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Count to 21</title>
+</head>
+
+<body>
+    <h1>Count to 21</h1>
+    <div id="status">waiting to connect...</div>
+    <hr />
+    <section id="game">
+        <div>Current count: <span id="count">0</span></div>
+        <button class="submit" value="1">+1</button>
+        <button class="submit" value="2">+2</button>
+        <button class="submit" value="3">+3</button>
+    </section>
+    <script type="module">
+        import { Client } from "http://localhost:3000/gameflow_client.js";
+
+        /** @type {Client} */
+        const client = new Client("http://localhost:3000");
+        client.joinGame("count21");
+
+        client.onJoin(({ status }) => {
+            document.getElementById("status").innerHTML = status;
+        });
+
+        client.onStateUpdate((gameState) => {
+            console.log(gameState);
+            document.getElementById("count").innerHTML = gameState.count;
+        });
+
+        //add the take turn listener to each button
+        document.querySelectorAll(".submit").forEach((button) => {
+            button.addEventListener("click", (event) => {
+                client.takeTurn({ count: parseInt(button.getAttribute("value")) });
+            });
+        });
+    </script>
+</body>

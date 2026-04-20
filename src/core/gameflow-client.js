@@ -21,10 +21,10 @@ export class Client {
         this.socket.onAny((event, data) => {
             switch (event) {
                 case "state_update":
-                    this.callHandler('state_update', data);
+                    this.callHandler('state_update', data.state);
                     if (data.whoseMove === this.socket.id) {
-                        this.currentTurnData = data;
-                        this.callHandler('myTurn', data);
+                        this.currentTurnData = data.state;
+                        this.callHandler('myTurn', data.state);
                     }
                     break;
                 case "action_result":
