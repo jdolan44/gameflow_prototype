@@ -47,6 +47,7 @@ export class Session {
                 break;
             case "quit_game":
                 this.handleGameOver({ type: "quit", quitter: socket });
+                this.sendActionResult(socket, true);
                 break;
             default:
                 this.sendActionResult(socket, false, "message type not recognized!");
@@ -99,8 +100,7 @@ export class Session {
         }
 
         if (outcome.type === 'quit') {
-            gameEndData.quitter = outcome.quitter;
-            this.sendActionResult(outcome.quitter, true);
+            gameEndData.quitter = outcome.quitter.id;
         }
 
         this.players.forEach((player, index) => {
@@ -110,15 +110,6 @@ export class Session {
         });
 
         console.log(`GAME END: ${this.sessionID}`);
-        this.onGameEnd(this.sessionID);
-    }
-
-    //TODO: move this to above
-    /**@deprecated */
-    handleQuit(socket) {
-        this.sendToRoom("game_end", { reason: "quit", quitter: socket.id, state: this.game.gameState });
-        console.log(`GAME END: ${this.sessionID}`);
-        this.sendActionResult(socket, true);
         this.onGameEnd(this.sessionID);
     }
 
