@@ -23,9 +23,9 @@ createGameServer({ httpServer: server, gameRegistry });
 
 app.use(express.static(path.join(process.cwd(), "src/clients")));
 
-//TODO: must be hosted somewhere. turn into a package?
+//TODO: tech debt. shhhhhh
 app.get('/gameflow_client.js', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'src/core/gameflow-client.js'));
+    res.sendFile(path.join(process.cwd(), 'packages/client/dist/browser.js'));
 });
 
 server.listen(3000, () => {

@@ -1,6 +1,4 @@
-//TODO: only works if client and server are on the same port
-import { io } from "./socket.io/socket.io.esm.min.js";
-
+import { io } from "socket.io-client";
 
 /**
  * @class
