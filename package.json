@@ -1,7 +1,8 @@
 {
   "name": "gameflow_prototype",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "src/demos/react"
   ],
   "version": "1.0.0",
   "description": "This is a prototype for GameFlow, a framework for the development of two-player turn-based games.",

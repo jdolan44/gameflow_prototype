@@ -19,9 +19,11 @@ const gameRegistry = {
     count21: Count21
 };
 
+const mycors = { origin: "*" };
+
 //for hosting on a different port:
 //createGameServer({ port: 4000, gameRegistry, cors: { origin: "*" } }).start();
-createGameServer({ httpServer: server, gameRegistry });
+createGameServer({ httpServer: server, gameRegistry, cors: mycors });
 
 app.use(express.static(path.join(process.cwd(), "src/demos/plain_html")));
 
