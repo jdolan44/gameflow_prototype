@@ -1,7 +1,6 @@
 import { Client } from 'gameflow-client'
 import './App.css'
 import { useEffect, useState } from 'react';
-import TicTacToeBoard from './TicTacToeBoard';
 
 // Create client OUTSIDE the component to prevent multiple socket connections
 const client = new Client("http://localhost:3000");
