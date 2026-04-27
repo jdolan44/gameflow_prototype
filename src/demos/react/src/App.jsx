@@ -24,8 +24,6 @@ client.onGameOver((outcome) => {
 });
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
       <button onClick={() => joinGame(client)}>Join Game</button>
