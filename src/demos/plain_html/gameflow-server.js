@@ -1,12 +1,12 @@
-import { SimpleGame } from "../games/SimpleGame.js";
-import { TicTacToe } from "../games/TicTacToe.js";
+import { SimpleGame } from "../../games/SimpleGame.js";
+import { TicTacToe } from "../../games/TicTacToe.js";
 import express from "express";
 import cors from "cors";
 import path from "path";
 import process from "process";
 import { createServer } from "http";
 import { createGameServer } from "gameflow";
-import { Count21 } from "../games/Count21.js";
+import { Count21 } from "../../games/Count21.js";
 
 const app = express();
 app.use(cors());

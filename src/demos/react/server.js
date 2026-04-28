@@ -24,6 +24,7 @@ async function start() {
     createGameServer({ httpServer, gameRegistry, cors: mycors });
 
     httpServer.listen(3000);
+    console.log("server running at http://localhost:3000");
 }
 
 start();
