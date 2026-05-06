@@ -27,7 +27,8 @@
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "http": "^0.0.1-security",
-    "prompt-sync": "^4.2.0"
+    "prompt-sync": "^4.2.0",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

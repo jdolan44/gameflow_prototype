@@ -1,3 +1,5 @@
+import { log } from "./logger.js"
+
 export class Session {
     /**@type {GameObject} */
     game; //GameObject instance
@@ -20,8 +22,8 @@ export class Session {
         });
 
         //log game start
-        console.log(`GAME START: ${this.sessionID},`);
-        console.log(this.game.gameState);
+        log("info", "GAME START", { sessionID: this.sessionID });
+        log("debug", "INITIAL STATE", { sessionID: this.sessionID, state: this.game.gameState });
 
         // Emit to everyone in the room
         this.sendToRoom("join_status", { status: "begin", sessionID: this.sessionID });
@@ -57,7 +59,7 @@ export class Session {
     //handles a turn recieved from a player.
     //sends an "action_result" event.
     handleTurn(socket, move) {
-        console.log(move);
+        log("debug", "move", { player: socket.id, move });
         //verify it is this player's turn.
         if (socket.id != this.getCurrentPlayer()) {
             this.sendActionResult(socket, false, "not your turn!");
@@ -109,13 +111,17 @@ export class Session {
             player.emit("game_end", gameEndData);
         });
 
-        console.log(`GAME END: ${this.sessionID}`);
+        log("info", "GAME END", { sessionID: this.sessionID });
         this.onGameEnd(this.sessionID);
     }
 
     sendActionResult(socket, success = true, error = "") {
-        if (!success) console.log(socket.id + " error: " + error);
-        else console.log(socket.id + " action success!");
+        if (!success) {
+            log("error", error, { player: socket.id });
+        }
+        else {
+            log("info", "action success", { player: socket.id });
+        }
         socket.emit("action_result", { success, error });
     }
 

@@ -1,8 +1,10 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { Session } from "./Session.js";
+import { log } from "./logger.js";
 
 export function createGameServer(options = {}) {
+    //unpack options
     const {
         httpServer,
         port = 3000,
@@ -10,6 +12,7 @@ export function createGameServer(options = {}) {
         cors,
     } = options;
 
+    //configure server
     const server = httpServer || createServer();
     const io = new Server(server, {
         cors,
@@ -18,6 +21,7 @@ export function createGameServer(options = {}) {
         }
     });
 
+    //dict of all waiting players
     const waitingPlayers = {};
 
     //dict of all game sessions
@@ -33,7 +37,7 @@ export function createGameServer(options = {}) {
     }
 
     io.on("connection", (socket) => {
-        console.log("CONNECTED: " + socket.id);
+        log("info", "CONNECTED", { socket: socket.id });
 
         // client should emit a join request specifying the kind of game
         socket.on("join_game", ({ gameType = "simple" } = {}) => {
@@ -51,7 +55,7 @@ export function createGameServer(options = {}) {
             } else {
                 waitingPlayers[gameType] = socket;
                 socket.emit("join_status", { status: "queued" }); //notify client they have been queued
-                console.log(`QUEUED: ${socket.id}, ${gameType}`);
+                log("info", "QUEUED", { socket: socket.id, gameType })
             }
         });
 
@@ -69,18 +73,18 @@ export function createGameServer(options = {}) {
             for (const [type, ws] of Object.entries(waitingPlayers)) {
                 if (ws === socket) {
                     delete waitingPlayers[type];
-                    console.log(`LEFT QUEUE: ${socket.id}`);
+                    log("info", "LEFT QUEUE", { socket: socket.id });
                     return;
                 }
             }
-            console.log(`DISCONNECT: ${socket.id}`);
+            log("info", "DISCONNECT", { socket: socket.id });
         });
     });
 
     function start() {
         if (!httpServer) {
             server.listen(port, () => {
-                console.log(`GameFlow running on port ${port}`);
+                log("info", "START", { port: port });
             });
         }
     }
