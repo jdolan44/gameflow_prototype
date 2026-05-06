@@ -1,8 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Client } from 'gameflow-client';
-import './App.css';
-
-const client = new Client("http://localhost:3000");
 
 // Event handlers extracted for clarity
 function handleJoin(data, setStatus) {
@@ -25,7 +21,7 @@ function handleGameOver(outcome, setStatus) {
     }
 }
 
-export default function SimpleGame() {
+export default function SimpleGame({ client }) {
     const [move, setMove] = useState("");
     const [status, setStatus] = useState("");
 

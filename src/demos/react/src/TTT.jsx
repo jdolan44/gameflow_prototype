@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
 import TTTBoard from "./TTTBoard"
-import { Client } from 'gameflow-client';
-
-const client = new Client("http://localhost:3000");
 
 function handleMyTurn(setStatus, setMyTurn) {
     setStatus("it's your turn!");
@@ -21,7 +18,7 @@ function handleGameOver(outcome, setStatus) {
     }
 }
 
-function TTT() {
+function TTT({ client }) {
     const [board, setBoard] = useState([
         [null, null, null],
         [null, null, null],

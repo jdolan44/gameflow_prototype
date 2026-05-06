@@ -3,12 +3,16 @@ import TTT from './TTT';
 import SimpleGame from './SimpleGame'
 import { useState } from 'react';
 
+import { Client } from 'gameflow-client';
+
+const client = new Client("http://localhost:3000");
+
 function App() {
   const [choice, setChoice] = useState("");
 
   switch (choice) {
-    case "ttt": return <TTT />
-    case "simple": return <SimpleGame />
+    case "ttt": return <TTT client={client} />
+    case "simple": return <SimpleGame client={client} />
     default: return (
       <div>
         <h2>Select a game:</h2>
