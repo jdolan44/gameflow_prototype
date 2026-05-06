@@ -1,0 +1,13 @@
+{
+    "disableAll": false,
+    "console": {
+        "enabled": true,
+        "level": "debug"
+    },
+    "file": {
+        "enabled": false,
+        "level": "info",
+        "filename": "logs/gameflow.log",
+        "maxsize": "10m"
+    }
+}
