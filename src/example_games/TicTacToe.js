@@ -1,7 +1,7 @@
 import { GameObject } from "gameflow";
 
 export class TicTacToe extends GameObject {
-    // move all state into gameState so it can be inspected/serialized
+    //initial state of the game
     initialState() {
         return {
             board: [
@@ -12,23 +12,27 @@ export class TicTacToe extends GameObject {
             marks: ['X', 'O']
         };
     }
-    isValidTurn({ x, y }, { board }) { //moves should have properties x and y
+
+    //validates a player's turn (must be placed on an empty square).
+    isValidTurn({ x, y }, { board }) {
         return x >= 0 && x <= 2 &&
             y >= 0 && y <= 2 &&
             board[x][y] == null;
     }
 
+    //applies the user's turn (pre-verified by the server).
     takeTurn({ x, y }, { marks, board }) {
         const mark = marks[this.whoseMove - 1];
         board[x][y] = mark;
     }
 
+    //checks for an end to the game.
     checkGameOver(gameState) {
         const b = gameState.board;
         const checkLine = (a, b, c) => a && a === b && a === c;
         let winner = false;
 
-        // rows/columns
+        // check rows/columns
         for (let i = 0; i < 3; i++) {
             if (checkLine(b[i][0], b[i][1], b[i][2])) {
                 winner = true;
@@ -38,7 +42,7 @@ export class TicTacToe extends GameObject {
             }
         }
 
-        // diagonals
+        // check diagonals
         if (checkLine(b[0][0], b[1][1], b[2][2])) {
             winner = true;
         }
