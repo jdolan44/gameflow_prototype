@@ -2,8 +2,8 @@ import express from "express";
 import { createServer as createViteServer } from "vite";
 import { createServer as createHttpServer } from "http";
 import { createGameServer } from "gameflow";
-import { TicTacToe } from "../../games/TicTacToe.js";
-import { SimpleGame } from "../../games/SimpleGame.js";
+import { TicTacToe } from "../../example_games/TicTacToe.js";
+import { SimpleGame } from "../../example_games/SimpleGame.js";
 
 async function start() {
     const app = express();
