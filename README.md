@@ -17,7 +17,7 @@ Setting up GameFlow involves:
 - Creating the game server.
 - Developing the client UI for your game.
 
-More details on setup can be found in [setup.md](./setup.md).
+More details on setup can be found [here](./docs/setup.md).
 
 ## Known Issues
 - shutting down the server may have strange effects on the client.
