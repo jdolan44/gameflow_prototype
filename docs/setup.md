@@ -12,6 +12,7 @@ By the end of this tutorial, you will:
 - [Installation](#installation)
 - [Creating a Game Object](#step-1-creating-a-game-object)
 - [Creating a Game Server](#step-2-creating-a-game-server)
+- [Connecting a Game Client](#step-3-connecting-a-web-client)
 
 ## Prerequisites:
 Before starting, be sure to have:
@@ -408,3 +409,5 @@ When a player quits:
 4. The game outcome includes `"quit"` as the reason, and `"quitter"` as the player who quit the game. 
 
 The `OnGameOver()` handler we already created handles quit events.
+
+Now you should have a working game client that players can connect to and play Tic-Tac-Toe!
