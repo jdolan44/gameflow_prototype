@@ -240,6 +240,8 @@ const client = new Client("http://localhost:4000");
 ```
 You then pass this client into your game component.
 
+Note: Including the client works differently for static files. See [here](../packages/client/README.md#connecting-a-client-in-static-files) for more details.
+
 ```jsx
 <TTT client={client} />
 ```
