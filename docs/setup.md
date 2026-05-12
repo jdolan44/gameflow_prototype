@@ -410,4 +410,4 @@ When a player quits:
 
 The `OnGameOver()` handler we already created handles quit events.
 
-Now you should have a working game client that players can connect to and play Tic-Tac-Toe!
+Now you should have a working game client that players can connect to and play Tic-Tac-Toe! For a fully working example of this, check out [this react demo!](../src/demos/react/)
