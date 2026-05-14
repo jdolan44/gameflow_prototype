@@ -1,12 +1,14 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Session } from '../src/Session.js';
 
+//create a fake socket object for testing purposes.
 const createMockSocket = (id) => ({
     id,
     join: vi.fn(),
     emit: vi.fn(),
 });
 
+//create a mock IO connection.
 const createMockIo = () => {
     const emit = vi.fn();
     return {
@@ -15,6 +17,7 @@ const createMockIo = () => {
     };
 };
 
+//create a mock GameObject class.
 const createMockGame = ({ whoseMove = 1, valid = true, gameState = {} } = {}) => ({
     gameState,
     whoseMove,
@@ -41,10 +44,11 @@ describe('Session', () => {
 
     test('constructor joins players and emits initial room events', () => {
         const room = session.getSessionId();
-
+        //ensure each player socket has been connected to the room
         expect(sockets[0].join).toHaveBeenCalledWith(room);
         expect(sockets[1].join).toHaveBeenCalledWith(room);
         expect(io.to).toHaveBeenCalledWith(room);
+        //each player has been notified of the join and sent the initial state.
         expect(io.to(room).emit).toHaveBeenCalledWith('join_status', {
             status: 'begin',
             sessionID: room,
